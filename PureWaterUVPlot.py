@@ -14,6 +14,7 @@ Created on Sun Jun 30 16:23:08 2019
 #importing useful libraries
 import matplotlib.pyplot as plt                                      
 from numpy import array, zeros
+import numpy as np
 
 #creating wavelength array, assigning values from 196 to 320 nanometers
 wavelength = array(range(196, 321))
@@ -155,7 +156,7 @@ for x in range(125):
     T_10m[x] = 10 ** (-10 * k) #calculate transmittance and assign to relevant index
     
 plt.plot(wavelength, T_10m, "ro") #plotting wavelength on the horizontal and transmittance on the vertical
-plt.axis([190,350,0,1]) #setting axis maxima and minima 
+plt.axis([190,320,0,1]) #setting axis maxima and minima 
 plt.xlabel("Wavelength (nm)") #titling x axis
 plt.ylabel("Transmittance") #titling y axis
 plt.title("Transmittance of Pure Water at 10 m") #titling graph
@@ -168,7 +169,7 @@ for x in range(125):
     T_m[x] = 10**(-k) #calculate transmittance and assign to relevant index
     
 plt.plot(wavelength, T_m, "ro") #plotting wavelength on the horizontal and transmittance on the vertical
-plt.axis([190,350,0,1]) #setting axis maxima and minima 
+plt.axis([190,320,0,1]) #setting axis maxima and minima 
 plt.xlabel("Wavelength (nm)") #titling x axis
 plt.ylabel("Transmittance") #titling y axis
 plt.title("Transmittance of Pure Water at 1 m") #titling graph
@@ -181,29 +182,50 @@ for x in range(125):
     T_cm[x] = 10**(-k * 0.01) #calculate transmittance and assign to relevant index
     
 plt.plot(wavelength, T_cm, "ro") #plotting wavelength on the horizontal and transmittance on the vertical
-plt.axis([190,350,0,1]) #setting axis maxima and minima 
+plt.axis([190,320,0,1]) #setting axis maxima and minima 
 plt.xlabel("Wavelength (nm)") #titling x axis
 plt.ylabel("Transmittance") #titling y axis
 plt.title("Transmittance of Pure Water at 1 cm") #titling graph
 plt.show() #display graph
 
-#calculating transmittance for 1 micro metre
+#calculating transmittance for 1 micro meter
 T_um = array(zeros(125)) #T_um: array of transmittance values for 1 micro metre
 for x in range(125):
     k = ab_const[x] * 0.01  #k: absorbtivity, converting to m^-1
     T_um[x] = 10**(-k * (10 ** -6)) #calculate transmittance and assign to relevant index
     
 plt.plot(wavelength, T_um, "ro")  #plotting wavelength on the horizontal and transmittance on the vertical
-plt.axis([190,350,0,1]) #setting axis maxima and minima 
+plt.axis([190,320,0,1]) #setting axis maxima and minima 
 plt.xlabel("Wavelength (nm)")  #titling x axis
 plt.ylabel("Transmittance")  #titling y axis
 plt.title("Transmittance of Pure Water at 1 \u03BCm") #titling graph
 plt.show() #display graph
 
 
+#importing data
+wv_quickenden, molabs_quickenden = np.genfromtxt('./Processed-Data/quickenden.dat', skip_header=2, unpack=True, usecols=(0,1))#nm, M^=1 
 
+#graphing molar absorptivity coefficients
+plt.plot(wv_quickenden, molabs_quickenden, "bo")
+plt.xlabel("Wavelength (nm)")  #titling x axis
+plt.ylabel("Absorptivity (cm^-1)")  #titling y axis
+plt.yscale("log")
+plt.title("Absorptivity of Pure Water") #titling graph
+#plt.savefig("Absorptivity_purewater_quickenden.pdf", orientation="portrait", papertype='letter', format="pdf") #saving graph as pdf
+plt.show() #display graph
 
+#graphing all on same axes
+plt.plot(wavelength, T_10m, "ro", label="10 m") #plotting wavelength on the horizontal and transmittance on the vertical
+plt.plot(wavelength, T_m, "bo", label="1 m") #plotting wavelength on the horizontal and transmittance on the vertical
+plt.plot(wavelength, T_cm, "go", label="1 cm") #plotting wavelength on the horizontal and transmittance on the vertical
 
+plt.axis([190,320,0,1]) #setting axis maxima and minima 
+plt.xlabel("Wavelength (nm)") #titling x axis
+plt.ylabel("Transmittance") #titling y axis
+plt.title("Transmittance of Pure Water") #titling graph
+plt.legend(loc="best", ncol=1,borderaxespad=1, fontsize=10) #creating legend
+plt.savefig("PureWater.pdf", orientation="portrait", papertype='letter', format="pdf") #saving graph as pdf
+plt.show() #display graph
 
 
 
